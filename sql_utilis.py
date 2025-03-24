@@ -16,7 +16,7 @@ def execute_sql(query, name = None, *variables):
     cursor = connection.cursor()
     cursor.execute(query, variables)
     try:
-        return cursor.fetchall()
+        return cursor.fetchall()[0]
     except psycopg2.ProgrammingError:
         return None
     finally:
