@@ -27,11 +27,13 @@ class User:
     @classmethod
     def load_user_by_username(cls, login):
         sql = "SELECT * FROM users WHERE login = %s"
-        ret_val = execute_sql(sql, 'workshop', login)[0]
-        u = cls(ret_val[1], ret_val[2], ret_val[3])
-        u.id = ret_val[0]
-        return u
-
+        ret_val = execute_sql(sql, 'workshop', login)
+        if ret_val is not None:
+            for row in ret_val:
+                u = cls(row[1], row[2], row[3])
+                u.id = row[0]
+            return ret_val
+        return None
     @classmethod
     def load_user_by_id(cls, id):
         sql = "SELECT * FROM users WHERE id = %s"

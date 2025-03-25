@@ -16,8 +16,13 @@ def execute_sql(query, name = None, *variables):
     cursor = connection.cursor()
     cursor.execute(query, variables)
     try:
-        return cursor.fetchall()[0]
+        result =  cursor.fetchall()
+        if result and len(result) > 0:
+            return result
+        else:
+            return None
     except psycopg2.ProgrammingError:
         return None
     finally:
         cursor.close()
+
