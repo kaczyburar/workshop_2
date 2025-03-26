@@ -13,6 +13,8 @@ def validate_user_data(login, password, confirm_password):
 
 def validate_user(login, password):
     u1 = models.User.load_user_by_username(login)
-    if u1.login != login or u1.password != password:
+    if u1 is None:
         return False
+    if u1.login != login or u1.password != password:
+            return False
     return True
