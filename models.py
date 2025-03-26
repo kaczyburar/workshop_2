@@ -1,4 +1,5 @@
 from sql_utilis import execute_sql
+import datetime
 
 class User:
     def __init__(self,login,password, confirm_password):
@@ -32,7 +33,7 @@ class User:
             for row in ret_val:
                 u = cls(row[1], row[2], row[3])
                 u.id = row[0]
-            return ret_val
+            return u
         return None
     @classmethod
     def load_user_by_id(cls, id):
@@ -67,3 +68,44 @@ class User:
         else:
             return False
 
+
+class Message:
+    def __init__(self, from_id, to_id, text):
+        self.from_id = from_id
+        self.to_id = to_id
+        self.text = text
+        self._id = None
+        self._creation_date = None
+
+    @property
+    def id(self):
+        return self._id
+
+    def save(self, text = None):
+        date = datetime.datetime.now().strftime('%Y-%m-%d')
+        if self._id is None:
+            sql = "INSERT INTO messages (from_id, to_id, creation_date, text) VALUES (%s, %s, %s, %s) returning id"
+            ret_val = execute_sql(sql, 'workshop', self.from_id, self.to_id, date, self.text)[0]
+            self._id = ret_val[0]
+        else:
+            sql = "UPDATE messages SET creation_date = %s, text = %s WHERE id = %s"
+            execute_sql(sql, 'workshop', date, text, self._id)
+        return self
+
+    @staticmethod
+    def load_all_messages():
+        sql = "SELECT * FROM messages"
+        ret_val = execute_sql(sql, 'workshop')
+        return ret_val
+
+    @staticmethod
+    def load_message(id):
+        sql = "SELECT * FROM messages WHERE id = %s"
+        ret_val = execute_sql(sql, 'workshop', id)[0]
+        return ret_val
+
+    @staticmethod
+    def delete_message(id):
+        sql = "DELETE FROM messages WHERE id = %s"
+        ret_val = execute_sql(sql, 'workshop', id)
+        return f"Poprawnie usunieto wiadomosc o id {id}"
