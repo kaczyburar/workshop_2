@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Users</title>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Login</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>{{loop.index}}</td>
+    <td>{{user}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>

@@ -49,13 +49,14 @@ class User:
     def load_all_users(cls):
         sql = "SELECT * FROM users"
         ret_val = execute_sql(sql, 'workshop')
-        users = []
-        for u in ret_val:
-            u = cls(u[1], u[2], u[3])
-            u.id = ret_val[0]
-            users.append(u)
-        return users
-
+        logins = [login[1] for login in ret_val]
+        # users = []
+        # for u in ret_val:
+        #     u = cls(u[1], u[2], u[3])
+        #     u.id = ret_val[0]
+        #     users.append(u)
+        # return users
+        return logins
 
     def delete(self):
         if self.id is not None:

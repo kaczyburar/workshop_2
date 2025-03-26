@@ -25,6 +25,10 @@ def create_user():
     else:
         return render_template("create_user.html", message=message)
 
+@app.route('/users', methods=['GET'])
+def users():
+    users = models.User.load_all_users()
+    return render_template("list_users.html", users=users)
 
 
 if __name__ == '__main__':
