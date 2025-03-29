@@ -56,6 +56,33 @@ def send_message():
     else:
         return render_template("send_message.html", message=message_)
 
+@app.route('/messages', methods=['POST','GET'])
+def messages():
+    message_ = []
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        if validators.validate_user(login, password):
+            u1 = models.User.load_user_by_username(login)
+            user_messages = models.Message.load_user_messages(u1.id)
+            print(user_messages)
+            if user_messages is not None:
+                logins = []
+                for message in user_messages:
+                    u = models.User.load_user_by_id(message[1])
+                    logins.append(u.login)
+                result = [(mes[0],logins[i], mes[2], mes[3], mes[4]) for i, mes in enumerate(user_messages)]
+
+                return render_template('list_messages.html', usr_mess=result)
+            else:
+                message_ = "Brak wiadomosci"
+                return render_template('login.html', message=message_)
+        else:
+            message_ = "Bad username or password"
+            return render_template('login.html', message=message_)
+    else:
+        return render_template('login.html', message=message_)
+
 if __name__ == '__main__':
     app.run(debug=True)
 

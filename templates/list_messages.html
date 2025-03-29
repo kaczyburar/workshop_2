@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>From User ID</th>
+        <th>Message</th>
+        <th>Date</th>
+    </tr>
+    {% for mess in usr_mess %}
+    <tr>
+        <td>{{loop.index}}</td>
+        <td>{{mess[1]}}</td>
+        <td>{{mess[4]}}</td>
+        <td>{{mess[3]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

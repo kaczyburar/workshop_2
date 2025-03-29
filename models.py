@@ -11,6 +11,7 @@ class User:
     def __str__(self):
         return f'{self.login} {self.password}'
 
+
     def save(self, password = None):
         if self.id is None:
             sql = "INSERT INTO users (login, password, confirm_password) VALUES (%s, %s, %s) returning id"
@@ -102,6 +103,12 @@ class Message:
     def load_message(id):
         sql = "SELECT * FROM messages WHERE id = %s"
         ret_val = execute_sql(sql, 'workshop', id)[0]
+        return ret_val
+
+    @staticmethod
+    def load_user_messages(user_id):
+        sql = "SELECT * FROM messages WHERE to_id = %s"
+        ret_val = execute_sql(sql, 'workshop', user_id)
         return ret_val
 
     @staticmethod
